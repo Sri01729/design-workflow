@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Design-workflow — Mastra Blog UI Clone
 
-## Getting Started
+Next.js 15 App Router project that clones the Mastra blog UI and applies a strict design token system via CSS custom properties. Playwright MCP was used to snapshot the original and iterate until visual parity.
 
-First, run the development server:
+### Stack
+- Next.js 15 + App Router + TypeScript
+- Global CSS with tokens in `src/app/globals.css`
+- Tailwind preflight via `@import "tailwindcss";` (utilities are not required; tokens drive styling)
 
+### Run locally
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
+# open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Design tokens (CSS variables)
+Defined in `src/app/globals.css` under `:root`:
+- Colors: black/greys/white family including `--color-darth-vader-2: rgb(10, 10, 10)` (page bg) and `--color-black-metal: rgb(8, 8, 8)` (card bg), plus semantic greys like `--color-desired-dawn` (text), `--color-carbon`, etc.
+- Typography: `--font-mastra-*` families for headings/body/small/caption
+- Spacing: `--vspace-*` and `--hspace-*`
+- Radius: `--border-radius-*`
+- Shadows: `--shadow-*`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Key decisions:
+- Dark theme parity: body uses `--color-darth-vader-2`; cards use `--color-black-metal` for subtle contrast; text uses `--color-desired-dawn`.
+- Interactive states implemented via global classes (no inline handlers) to keep Server/Client boundaries clean.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### App structure
+```
+src/app/
+  page.tsx          # layout composing Header, BlogContent, Footer
+  components/
+    Header.tsx      # top nav, logo, actions (client)
+    BlogContent.tsx # categories, search, post grid (client)
+    Footer.tsx      # links + newsletter (client)
+  globals.css       # token definitions + interaction styles
+```
 
-## Learn More
+### Screenshots (generated with Playwright MCP)
+Saved under `.playwright-mcp/`:
+- `original-mastra-blog.png` — source reference
+- `current-implementation.png` / `updated-implementation.png` — iteration
+- `dark-theme-implementation.png` / `corrected-colors-implementation.png` — final dark parity
 
-To learn more about Next.js, take a look at the following resources:
+### Troubleshooting
+- If you see "Event handlers cannot be passed to Client Component props", ensure interactive components include `'use client'` and rely on CSS hover/focus classes vs inline events.
+- If styles don’t apply, confirm global classes exist in `globals.css` (e.g., `.nav-link:hover`, `.search-input:focus`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Scripts
+- `pnpm dev` — start dev server
+- `pnpm build` — production build
+- `pnpm start` — run built app
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### License
+MIT
