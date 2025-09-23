@@ -52,5 +52,14 @@ Saved under `.playwright-mcp/`:
 - `pnpm build` — production build
 - `pnpm start` — run built app
 
+### Key Features
+- **Pixel-Perfect UI Replication**: The project serves as a demonstration of cloning a professionally designed UI with high fidelity.
+- **Strict Design Token System**: All styling is managed through a comprehensive set of design tokens defined as CSS custom properties, ensuring consistency and maintainability.
+- **Dark Theme Implementation**: A complete dark theme has been implemented, matching the original Mastra blog's color scheme.
+- **Component-Based Architecture**: The UI is broken down into modular React components (`Header`, `BlogContent`, `Footer`) for better organization and reusability.
+- **Next.js 15 with App Router**: Built on the latest version of Next.js, leveraging the App Router for server- and client-side rendering.
+- **Interactive Elements with CSS**: All interactive states (hover, focus) are handled purely with CSS to maintain a clean separation of concerns and optimize performance.
+- **Playwright for UI Verification**: The project utilized the Playwright MCP server to take screenshots and compare the implementation against the original design, ensuring a perfect match.
+
 ### License
 MIT
